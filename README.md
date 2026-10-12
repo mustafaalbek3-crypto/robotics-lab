@@ -3,34 +3,38 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>مختبر الفريمات XYZ</title>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;600&display=swap" rel="stylesheet">
+<title>مختبر الفريمات ثلاثية الأبعاد</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#eef2f1;--panel:#fff;--ink:#16302f;--mute:#5d7573;--line:#cddad8;--x:#e03b3b;--y:#2f9e4f;--z:#2f6fe0;--acc:#16302f;--or:#d9820f;
-box-sizing:border-box}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#10211f;--panel:#182d2b;--ink:#e6f0ee;--mute:#92aeab;--line:#2c4744;--acc:#e6f0ee;--or:#f0a020}}
-:root[data-theme="dark"]{--bg:#10211f;--panel:#182d2b;--ink:#e6f0ee;--mute:#92aeab;--line:#2c4744;--acc:#e6f0ee;--or:#f0a020}
+:root{--bg:#fff;--panel:#fff;--soft:#f3f6f5;--ink:#16302f;--mute:#667c79;--line:#dce4e2;--x:#e03b3b;--y:#2f9e4f;--z:#2f6fe0;--acc:#16302f;--or:#d9820f}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font:400 15px/1.7 "IBM Plex Sans Arabic",system-ui,sans-serif}
-.app{display:grid;grid-template-columns:1fr;gap:12px;padding:12px;padding-top:calc(12px + env(safe-area-inset-top,0px));padding-bottom:calc(12px + env(safe-area-inset-bottom,0px));max-width:1400px;margin:0 auto}
+body{margin:0;background:#fff;color:var(--ink);font:400 15px/1.7 "IBM Plex Sans Arabic",system-ui,sans-serif}
+.app{display:grid;grid-template-columns:1fr;gap:14px;padding:12px;padding-top:calc(12px + env(safe-area-inset-top,0px));max-width:1400px;margin:0 auto}
 #side{min-width:0}
-#view{position:relative;order:-1;height:50vh;min-height:290px;border-radius:14px;background:var(--panel);border:1px solid var(--line);overflow:hidden}
+#view{position:relative;order:-1;height:52vh;min-height:300px;border-radius:14px;background:#fff;border:1px solid var(--line);overflow:hidden}
 @media (min-width:900px){
- .app{grid-template-columns:380px 1fr;align-items:start}
- #view{order:0;position:sticky;top:12px;height:calc(100vh - 24px)}
- #side{max-height:calc(100vh - 24px);overflow-y:auto;padding-inline-end:4px}
+ .app{grid-template-columns:390px 1fr;align-items:start}
+ #view{order:0;position:sticky;top:12px;height:calc(100vh - 64px)}
+ #side{max-height:calc(100vh - 64px);overflow-y:auto;padding-inline-end:6px}
 }
 canvas{width:100%;height:100%;display:block;touch-action:none}
 #hint{position:absolute;inset-inline:0;bottom:6px;text-align:center;font-size:12px;color:var(--mute);pointer-events:none}
-h1{font-size:19px;margin:0 0 8px}
-.seg{display:flex;gap:6px;margin:8px 0}
-.seg button{flex:1;padding:8px 4px;border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:10px;font:inherit;font-size:13px}
-.seg button[aria-pressed="true"]{background:var(--acc);color:var(--bg);border-color:var(--acc)}
-.note{font-size:13px;color:var(--mute);margin:0 0 10px}
-fieldset{border:1px solid var(--line);background:var(--panel);border-radius:14px;margin:0 0 10px;padding:6px 12px 10px}
+.hd{display:flex;align-items:center;gap:12px;margin:0 0 8px}
+.hd h1{font-size:22px;font-weight:700;margin:0;line-height:1.25}
+.sub{font-size:12px;color:var(--mute)}
+.bar{display:flex;height:4px;border-radius:4px;overflow:hidden;margin:0 0 12px}.bar i{flex:1}
+.bar i:nth-child(1){background:var(--x)}.bar i:nth-child(2){background:var(--y)}.bar i:nth-child(3){background:var(--z)}
+.sec{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:600;color:var(--mute);margin:14px 0 6px}
+.sec b{display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;background:var(--acc);color:#fff;font-size:11px}
+.seg{display:flex;gap:6px;margin:0 0 6px}
+.seg button{flex:1;padding:8px 4px;border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:10px;font:inherit;font-size:13px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--acc);color:#fff;border-color:var(--acc)}
+.note{font-size:13px;color:var(--mute);margin:0 0 8px}
+fieldset{border:1px solid var(--line);background:#fff;border-radius:14px;margin:0 0 10px;padding:6px 12px 10px;box-shadow:0 1px 2px rgba(22,48,47,.05)}
 legend{font-weight:600;padding:0 6px}
 fieldset.fa{border-inline-start:5px solid #0e9aa7}fieldset.fb{border-inline-start:5px solid #e8890c}
-.guide{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:6px 12px;margin:0 0 10px;font-size:13px}.guide summary{font-weight:600;cursor:pointer}.guide ol{margin:6px 0 2px;padding-inline-start:18px}.sw{display:inline-block;width:12px;height:12px;border-radius:50%;margin-inline-end:6px;vertical-align:middle}
+.guide{background:var(--soft);border:1px solid var(--line);border-radius:12px;padding:6px 12px;margin:0;font-size:13px}.guide summary{font-weight:600;cursor:pointer}.guide ol{margin:6px 0 2px;padding-inline-start:18px}
+.sw{display:inline-block;width:12px;height:12px;border-radius:50%;margin-inline-end:6px;vertical-align:middle}
 .row{display:grid;grid-template-columns:28px 1fr 56px;align-items:center;gap:8px;margin-top:4px}
 .row b{font-size:16px;text-align:center}
 .row output{direction:ltr;text-align:left;font-variant-numeric:tabular-nums;font-size:13px}
@@ -38,40 +42,49 @@ input[type=range]{width:100%;direction:ltr;height:30px}
 .rx{accent-color:var(--x)}.ry{accent-color:var(--y)}.rz{accent-color:var(--z)}
 .cx{color:var(--x)}.cy{color:var(--y)}.cz{color:var(--z)}
 .mat{direction:ltr;display:grid;gap:4px;max-width:340px;margin:8px auto;text-align:center;font-variant-numeric:tabular-nums}
-.mat span{padding:5px 0;border-radius:8px;background:var(--bg);font-size:14px}
+.mat span{padding:5px 0;border-radius:8px;background:var(--soft);font-size:14px}
 .m3 span:nth-child(3n+1),.m4 span:nth-child(4n+1){color:var(--x)}
 .m3 span:nth-child(3n+2),.m4 span:nth-child(4n+2){color:var(--y)}
 .m3 span:nth-child(3n),.m4 span:nth-child(4n+3){color:var(--z)}
 .m4 span:nth-child(4n){color:var(--or)}
 .kv{display:flex;justify-content:space-between;gap:8px;margin:4px 0;font-size:14px}
 .kv b{direction:ltr;font-variant-numeric:tabular-nums;font-weight:600}
-.reset{width:100%;padding:10px;border-radius:10px;border:1px solid var(--line);background:var(--panel);color:var(--ink);font:inherit}
+.reset{width:100%;padding:10px;border-radius:10px;border:1px solid var(--line);background:#fff;color:var(--ink);font:inherit;cursor:pointer}
+.ft{text-align:center;font-size:10.5px;color:#8aa09d;padding:2px 0 12px;padding-bottom:calc(12px + env(safe-area-inset-bottom,0px))}
 button:focus-visible,input:focus-visible{outline:2px solid var(--z);outline-offset:2px}
 </style>
 </head>
 <body>
 <div class="app">
 <aside id="side">
-<h1>مختبر الفريمات XYZ</h1>
-<p class="note" style="margin-bottom:6px">Robotics I · المحاضرة 2: الوصف المكاني (Spatial Description)</p>
+<div class="hd">
+<svg width="44" height="44" viewBox="0 0 42 42" aria-hidden="true"><g stroke-width="3" stroke-linecap="round"><line x1="10" y1="32" x2="34" y2="32" stroke="#e03b3b"/><line x1="10" y1="32" x2="10" y2="9" stroke="#2f6fe0"/><line x1="10" y1="32" x2="25" y2="19" stroke="#2f9e4f"/></g><polygon points="34,27.5 40,32 34,36.5" fill="#e03b3b"/><polygon points="5.5,10 10,3 14.5,10" fill="#2f6fe0"/><polygon points="21,18 29,15.5 27,23.5" fill="#2f9e4f"/><circle cx="10" cy="32" r="3.5" fill="#16302f"/></svg>
+<div><h1>مختبر الفريمات ثلاثية الأبعاد</h1><div class="sub">Spatial Frames Lab · Robotics I · المحاضرة 2</div></div>
+</div>
+<div class="bar"><i></i><i></i><i></i></div>
 <details class="guide" open><summary>ماذا تجرّب؟</summary><ol>
 <li>تبويب «فريم»: حرّك الفريم وأدره، وراقب مصفوفة R. كل عمود فيها هو اتجاه أحد محاور الفريم.</li>
 <li>بدّل بين «حول محاور العالم» و«حول محاور الفريم» بنفس الزوايا، ولاحظ أن النتيجة تختلف.</li>
 <li>تبويب «مقارنة A و B»: انظر T = A⁻¹·B وموقع B كما يراه A.</li>
 <li>تبويب «نقطة»: النقطة q ثابتة داخل الفريم، وP تتحرك في العالم.</li></ol></details>
+<div class="sec"><b>1</b>اختر القسم</div>
 <div class="seg" id="tabs" role="group" aria-label="الأقسام"></div>
 <p class="note" id="tabNote"></p>
+<div class="sec"><b>2</b>نوع الدوران</div>
 <div class="seg" id="modeSeg" role="group" aria-label="نوع الدوران">
 <button id="mWorld" aria-pressed="true">حول محاور العالم</button>
 <button id="mLocal" aria-pressed="false">حول محاور الفريم</button>
 </div>
 <p class="note" id="modeNote"></p>
+<div class="sec"><b>3</b>التحكم بالفريمات</div>
 <div id="ctl"></div>
+<div class="sec"><b>4</b>النتائج</div>
 <fieldset><legend id="outT">النتائج</legend><div id="out" aria-live="polite"></div></fieldset>
 <button class="reset" id="reset">إعادة الضبط</button>
 </aside>
 <div id="view"><canvas id="c"></canvas><div id="hint">اسحب للتدوير، وبإصبعين أو بالعجلة للتقريب</div></div>
 </div>
+<footer class="ft">تم إنشاء هذا الموقع من قبل <bdi>mustafa albak</bdi></footer>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
 (function(){
@@ -80,11 +93,23 @@ var cv=document.getElementById('c'),view=document.getElementById('view');
 var renderer=new T.WebGLRenderer({canvas:cv,antialias:true,alpha:true});
 renderer.setPixelRatio(Math.min(devicePixelRatio||1,2));
 var scene=new T.Scene(),cam=new T.PerspectiveCamera(45,1,0.1,100);cam.up.set(0,0,1);
-scene.add(new T.AmbientLight(0xffffff,0.7));
+scene.add(new T.AmbientLight(0xffffff,0.75));
 var dl=new T.DirectionalLight(0xffffff,0.6);dl.position.set(3,-4,6);scene.add(dl);
-var grid=new T.GridHelper(8,8,0x8aa3a0,0x8aa3a0);grid.rotation.x=Math.PI/2;
-grid.material.transparent=true;grid.material.opacity=0.25;scene.add(grid);
+var grid=new T.GridHelper(8,8,0xb9c8c5,0xdbe4e2);grid.rotation.x=Math.PI/2;scene.add(grid);
 
+/* text sprites */
+function mkText(cw,ch,sx,sy){
+  var c=document.createElement('canvas');c.width=cw;c.height=ch;var g=c.getContext('2d');g.direction='ltr';
+  var tex=new T.CanvasTexture(c);
+  var sp=new T.Sprite(new T.SpriteMaterial({map:tex,transparent:true,depthTest:false}));sp.scale.set(sx,sy,1);sp.renderOrder=10;
+  return{sp:sp,draw:function(lines,col,fs,border){
+    g.clearRect(0,0,cw,ch);
+    if(border){var r=14,x=3,y=3,w=cw-6,h=ch-6;g.beginPath();g.moveTo(x+r,y);g.arcTo(x+w,y,x+w,y+h,r);g.arcTo(x+w,y+h,x,y+h,r);g.arcTo(x,y+h,x,y,r);g.arcTo(x,y,x+w,y,r);g.closePath();
+      g.fillStyle='rgba(255,255,255,0.93)';g.fill();g.lineWidth=4;g.strokeStyle=border;g.stroke();}
+    g.fillStyle=col;g.font='600 '+fs+'px sans-serif';g.textAlign='center';g.textBaseline='middle';
+    var n=lines.length;lines.forEach(function(t,i){g.fillText(t,cw/2,ch*(i+0.5)/n+2);});
+    tex.needsUpdate=true;}};
+}
 function label(t,color,sz){
   var c=document.createElement('canvas');c.width=c.height=64;
   var g=c.getContext('2d');g.font='bold 48px sans-serif';g.textAlign='center';g.textBaseline='middle';
@@ -113,7 +138,14 @@ function frame(len,th,op,hc,bt){
     var b=badge(bt,hc,0.8);b.position.set(-0.45,-0.45,0.45);g.add(b);g.userData.badge=b;}
   return g;
 }
-scene.add(frame(2,0.04,0.28));
+scene.add(frame(2,0.04,0.3));
+
+/* numbered world grid */
+function tick(txt,col,x,y,z){var t=mkText(64,64,0.36,0.36);t.draw([txt],col,40);t.sp.position.set(x,y,z);scene.add(t.sp);}
+for(var i=-4;i<=4;i++){if(!i)continue;tick(String(i),'#d46a6a',i,-0.3,0);tick(String(i),'#4fae6c',-0.3,i,0);}
+for(var k=1;k<=3;k++)tick(String(k),'#5b87e0',-0.3,-0.3,k);
+tick('0','#6b7f7c',-0.3,-0.3,0);
+
 var CA=0x0e9aa7,CB=0xe8890c;
 var fA=frame(1.5,0.07,1,CA,'A'),fB=frame(1.5,0.07,1,CB,'B');scene.add(fA,fB);
 var P=new T.Mesh(new T.SphereGeometry(0.12,20,20),new T.MeshStandardMaterial({color:0xf0a020}));scene.add(P);
@@ -122,7 +154,30 @@ function mkLine(c,dash){var g=new T.BufferGeometry();g.setAttribute('position',n
 var lnA=mkLine(0xf0a020,false),lnO=mkLine(0x8aa3a0,true);
 function setLn(l,a,b){var p=l.geometry.attributes.position.array;p.set([a.x,a.y,a.z,b.x,b.y,b.z]);l.geometry.attributes.position.needsUpdate=true;l.computeLineDistances();}
 
-var th=0.9,ph=1.1,rad=9;
+/* numbers on frames: info box + staircase x,y,z */
+function mkInfo(){var t=mkText(520,130,2.6,0.65);scene.add(t.sp);return t;}
+var infoA=mkInfo(),infoB=mkInfo();
+var infoP=mkText(420,80,2.1,0.4);scene.add(infoP.sp);
+var SC=['#e03b3b','#2f9e4f','#2f6fe0'];
+function mkStair(){var o={lines:[],labs:[]};[0xe03b3b,0x2f9e4f,0x2f6fe0].forEach(function(c){o.lines.push(mkLine(c,true));var t=mkText(160,64,0.84,0.34);scene.add(t.sp);o.labs.push(t);});return o;}
+var stA=mkStair(),stB=mkStair();
+function V(a){return new T.Vector3(a[0],a[1],a[2]);}
+function updStair(st,x,y,z,vis){
+  var p=[[0,0,0],[x,0,0],[x,y,0],[x,y,z]],d=[x,y,z],nm=['x','y','z'],off=[[0,0,.2],[0,0,.2],[.38,0,0]];
+  for(var i=0;i<3;i++){
+    var show=vis&&Math.abs(d[i])>0.02;
+    setLn(st.lines[i],V(p[i]),V(p[i+1]));st.lines[i].visible=show;st.labs[i].sp.visible=show;
+    if(show){st.labs[i].draw([nm[i]+' = '+d[i].toFixed(1)],SC[i],34,SC[i]);
+      st.labs[i].sp.position.set((p[i][0]+p[i+1][0])/2+off[i][0],(p[i][1]+p[i+1][1])/2+off[i][1],(p[i][2]+p[i+1][2])/2+off[i][2]);}
+  }
+}
+function updInfo(info,pre,o,border){
+  var n=function(v){return (+v).toFixed(1);};
+  info.draw(['p = ('+n(S[pre+'x'])+', '+n(S[pre+'y'])+', '+n(S[pre+'z'])+')','θ = ('+S[pre+'rx']+'°, '+S[pre+'ry']+'°, '+S[pre+'rz']+'°)'],'#16302f',34,border);
+  info.sp.position.set(o.x,o.y,o.z-0.95);
+}
+
+var th=0.9,ph=1.1,rad=9.5;
 function place(){cam.position.set(rad*Math.sin(ph)*Math.cos(th),rad*Math.sin(ph)*Math.sin(th),rad*Math.cos(ph));cam.lookAt(0,0,0.5);}
 var pts={},last=0;
 cv.addEventListener('pointerdown',function(e){cv.setPointerCapture(e.pointerId);pts[e.pointerId]=[e.clientX,e.clientY];});
@@ -149,7 +204,7 @@ var DEF={Ax:0,Ay:0,Az:0,Arx:0,Ary:0,Arz:0,Bx:2,By:1,Bz:0.5,Brx:0,Bry:0,Brz:40,qx
 var S=Object.assign({},DEF),tab='f',world=true,D=Math.PI/180;
 var TABS=[['f','فريم'],['c','مقارنة A و B'],['p','نقطة مع الفريم']];
 var NOTE={
- f:'حرّك الفريم وأدره، وراقب مصفوفة الدوران.',
+ f:'حرّك الفريم وأدره، وراقب مصفوفة الدوران. تظهر قيم الإزاحة x وy وz على الخطوط المتقطعة، وقيم الموقع والزوايا في الصندوق تحت الفريم.',
  c:'T = A⁻¹·B تصف الفريم B كما يراه A. العمود الأخير هو موقع B في إحداثيات A، والجزء 3×3 هو الدوران النسبي. الفريم A بحلقة فيروزية والفريم B بحلقة برتقالية.',
  p:'النقطة q معرّفة داخل الفريم، وموقعها في العالم P = T·q. حرّك الفريم وانظر كيف تتحرك P بينما q ثابتة. المسافة من أصل الفريم |q| لا تتغير.'};
 var MN={w:'الترتيب: دوران حول X ثم Y ثم Z الثابتة: R = Rz·Ry·Rx.',l:'الدوران حول محاور الفريم المتحركة: R = Rx·Ry·Rz (كمفاصل الروبوت).'};
@@ -176,16 +231,19 @@ function build(){
 }
 function update(){
   el('modeNote').textContent=world?MN.w:MN.l;
-  var MA=M(),oA=new T.Vector3().setFromMatrixPosition(MA),o='';
-  MA.decompose(fA.position,fA.quaternion,sc);
-  var MB=M('B');MB.decompose(fB.position,fB.quaternion,sc);
+  var MA=M(),MB=M('B'),oA=new T.Vector3().setFromMatrixPosition(MA),oB=new T.Vector3().setFromMatrixPosition(MB),o='';
+  MA.decompose(fA.position,fA.quaternion,sc);MB.decompose(fB.position,fB.quaternion,sc);
   fB.visible=tab==='c';fA.userData.badge.visible=tab!=='f';
   P.visible=lnA.visible=tab==='p';lnO.visible=tab==='p'||tab==='c';
+  infoB.sp.visible=tab==='c';infoP.sp.visible=tab==='p';
+  updInfo(infoA,'A',oA,'#0e9aa7');updStair(stA,S.Ax,S.Ay,S.Az,true);
+  if(tab==='c'){updInfo(infoB,'B',oB,'#e8890c');}
+  updStair(stB,S.Bx,S.By,S.Bz,tab==='c');
   if(tab==='f'){
     el('outT').textContent='مصفوفة الدوران R';
     o=mat(MA,3)+kv('الموقع p',vec(oA))+'<p class="note">كل عمود هو اتجاه أحد محاور الفريم في إحداثيات العالم.</p>';
   }else if(tab==='c'){
-    var oB=new T.Vector3().setFromMatrixPosition(MB),r=MA.clone().invert().multiply(MB),e=r.elements,pb=new T.Vector3(e[12],e[13],e[14]);
+    var r=MA.clone().invert().multiply(MB),e=r.elements,pb=new T.Vector3(e[12],e[13],e[14]);
     var ang=Math.acos(Math.max(-1,Math.min(1,(e[0]+e[5]+e[10]-1)/2)))/D;
     setLn(lnO,oA,oB);
     el('outT').textContent='B بالنسبة إلى A';
@@ -193,6 +251,7 @@ function update(){
   }else{
     var q=new T.Vector3(S.qx,S.qy,S.qz),Pw=q.clone().applyMatrix4(MA);
     P.position.copy(Pw);setLn(lnA,oA,Pw);setLn(lnO,new T.Vector3(),Pw);
+    infoP.draw(['P = ('+f(Pw.x)+', '+f(Pw.y)+', '+f(Pw.z)+')'],'#16302f',38,'#f0a020');infoP.sp.position.set(Pw.x,Pw.y,Pw.z+0.5);
     el('outT').textContent='P = T·q';
     o=mat(MA,4)+kv('q داخل الفريم',vec(q))+kv('P في العالم',vec(Pw))+
       kv('المسافة من أصل الفريم |q|',f(q.length()))+kv('المسافة من أصل العالم |P|',f(Pw.length()))+
