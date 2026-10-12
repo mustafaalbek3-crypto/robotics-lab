@@ -83,7 +83,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--z);outline-offs
 </aside>
 <div id="view"><canvas id="c"></canvas><div id="hint">اسحب للتدوير، وبإصبعين أو بالعجلة للتقريب</div></div>
 </div>
-<footer class="ft"> By: <bdi>Mustafa Albek </bdi></footer>
+<footer class="ft"> Mustafa Albek <bdi>By:</bdi></footer>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
 (function(){
