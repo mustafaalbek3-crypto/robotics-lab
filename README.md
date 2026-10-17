@@ -1,4 +1,6 @@
-[3D Spatial Frames Lab.html](https://github.com/user-attachments/files/33593132/3D.Spatial.Frames.Lab.html)
+[3D Spatial Frames Lab (1).html](https://github.com/user-attachments/files/33599004/3D.Spatial.Frames.Lab.1.html)
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
 <meta charset="utf-8">
@@ -26,8 +28,8 @@ canvas{width:100%;height:100%;display:block;touch-action:none}
 .bar i:nth-child(1){background:var(--x)}.bar i:nth-child(2){background:var(--y)}.bar i:nth-child(3){background:var(--z)}
 .sec{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:600;color:var(--mute);margin:14px 0 6px}
 .sec b{display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;background:var(--acc);color:#fff;font-size:11px}
-.seg{display:flex;gap:6px;margin:0 0 6px}
-.seg button{flex:1;padding:8px 4px;border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:10px;font:inherit;font-size:13px;cursor:pointer}
+.seg{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 6px}
+.seg button{flex:1 1 auto;padding:8px 8px;border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:10px;font:inherit;font-size:13px;cursor:pointer}
 .seg button[aria-pressed="true"]{background:var(--acc);color:#fff;border-color:var(--acc)}
 .note{font-size:13px;color:var(--mute);margin:0 0 8px}
 fieldset{border:1px solid var(--line);background:#fff;border-radius:14px;margin:0 0 10px;padding:6px 12px 10px;box-shadow:0 1px 2px rgba(22,48,47,.05)}
@@ -52,6 +54,7 @@ input[type=range]{width:100%;height:30px}
 .reset{width:100%;padding:10px;border-radius:10px;border:1px solid var(--line);background:#fff;color:var(--ink);font:inherit;cursor:pointer}
 .ft{text-align:center;font-size:12px;line-height:1.7;color:#6f8582;padding:6px 12px 14px;padding-bottom:calc(14px + env(safe-area-inset-bottom,0px))}
 .ft b{color:var(--ink);font-weight:600}
+.chk{display:flex;gap:8px;align-items:flex-start;font-size:13px;margin:8px 0}.chk input{margin-top:4px}
 button:focus-visible,input:focus-visible{outline:2px solid var(--z);outline-offset:2px}
 </style>
 </head>
@@ -68,16 +71,17 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--z);outline-offs
 <li>Switch between “About world axes” and “About frame axes” with the same angles; the results differ.</li>
 <li>“Compare A &amp; B” tab: see T = A⁻¹·B, the pose of B as seen from A.</li>
 <li>“Point” tab: q is fixed inside the frame while P moves in the world.</li>
+<li>“Fixed vs Euler” tab: apply the same three angles both ways, step by step, and compare the two results.</li>
 <li>Type exact values (angles in degrees) in the boxes next to the sliders.</li></ol></details>
 <div class="sec"><b>1</b>Choose a section</div>
 <div class="seg" id="tabs" role="group" aria-label="Sections"></div>
 <p class="note" id="tabNote"></p>
-<div class="sec"><b>2</b>Rotation type</div>
+<div id="modeBox"><div class="sec"><b>2</b>Rotation type</div>
 <div class="seg" id="modeSeg" role="group" aria-label="Rotation type">
 <button id="mWorld" aria-pressed="true">About world axes</button>
 <button id="mLocal" aria-pressed="false">About frame axes</button>
 </div>
-<p class="note" id="modeNote"></p>
+<p class="note" id="modeNote"></p></div>
 <div class="sec"><b>3</b>Frame controls</div>
 <div id="ctl"></div>
 <div class="sec"><b>4</b>Results</div>
@@ -86,7 +90,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--z);outline-offs
 </aside>
 <div id="view"><canvas id="c"></canvas><div id="hint">Drag to orbit, pinch or scroll to zoom</div></div>
 </div>
-<footer class="ft">By <b>Mustafa Albek</b><br>Under the supervision of <b>Mr. Yazen Shakir</b></footer>
+<footer class="ft">By <b>Mustafa Albek</b><br>Under the supervision of <b>Mr. Yazan Shaker</b></footer>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
 (function(){
@@ -150,6 +154,9 @@ tick('0','#6b7f7c',-0.35,-0.35,0);
 
 var CA=0x0e9aa7,CB=0xe8890c;
 var fA=frame(2.6,0.09,1,CA,'A'),fB=frame(2.6,0.09,1,CB,'B');scene.add(fA,fB);
+var fF=frame(2.6,0.09,1,CA,'F'),fE=frame(2.6,0.09,1,CB,'E'),gF=frame(2.6,0.03,0.35),gE=frame(2.6,0.03,0.35);
+fF.position.set(0,-3,0);gF.position.set(0,-3,0);fE.position.set(0,3,0);gE.position.set(0,3,0);
+scene.add(fF,fE,gF,gE);fF.visible=fE.visible=gF.visible=gE.visible=false;
 var P=new T.Mesh(new T.SphereGeometry(0.16,20,20),new T.MeshStandardMaterial({color:0xf0a020}));scene.add(P);
 function mkLine(c,dash){var g=new T.BufferGeometry();g.setAttribute('position',new T.BufferAttribute(new Float32Array(6),3));
   var l=new T.Line(g,dash?new T.LineDashedMaterial({color:c,dashSize:.15,gapSize:.1}):new T.LineBasicMaterial({color:c}));l.frustumCulled=false;scene.add(l);return l;}
@@ -205,13 +212,14 @@ function kv(a,b){return '<div class="kv"><span>'+a+'</span><b>'+b+'</b></div>';}
 function mat(m,n){var e=m.elements,h='<div class="mat m'+n+'" style="grid-template-columns:repeat('+n+',1fr)">';
   for(var r=0;r<n;r++)for(var c=0;c<n;c++)h+='<span>'+f(e[c*4+r])+'</span>';return h+'</div>';}
 
-var DEF={Ax:0,Ay:0,Az:0,Arx:0,Ary:0,Arz:0,Bx:2,By:1,Bz:0.5,Brx:0,Bry:0,Brz:40,qx:1,qy:0.5,qz:0.5};
-var S=Object.assign({},DEF),tab='f',world=true,D=Math.PI/180;
-var TABS=[['f','Frame'],['c','Compare A & B'],['p','Point']];
+var DEF={Ax:0,Ay:0,Az:0,Arx:0,Ary:0,Arz:0,Bx:2,By:1,Bz:0.5,Brx:0,Bry:0,Brz:40,qx:1,qy:0.5,qz:0.5,Ex:60,Ey:30,Ez:45};
+var S=Object.assign({},DEF),tab='f',world=true,D=Math.PI/180,erev=false;
+var TABS=[['f','Frame'],['c','Compare A & B'],['p','Point'],['e','Fixed vs Euler']];
 var NOTE={
  f:'Move and rotate the frame and watch the rotation matrix. The x, y, z offsets appear on the dashed lines, and the position and angles in the box below the frame.',
  c:'T = A⁻¹·B is frame B as seen from A. The last column is the position of B in A’s coordinates, and the 3×3 block is the relative rotation. Frame A has a teal ring, frame B an orange ring.',
- p:'The point q is defined inside the frame; its world position is P = T·q. Move the frame and see P move while q stays fixed. The distance |q| from the frame origin never changes.'};
+ p:'The point q is defined inside the frame; its world position is P = T·q. Move the frame and see P move while q stays fixed. The distance |q| from the frame origin never changes.',
+ e:'The same three angles (a about X, b about Y, c about Z) are applied in the same order in two ways. Fixed angles rotate about the fixed world axes (the faint ghost axes). Euler angles rotate about the axes of the frame as it moves. Press Play (or any step button) to watch each rotation happen smoothly; the colored bar through each frame is the axis it is turning about, and the two frames diverge after step 1. Tick the box to see the equivalence: Euler X→Y→Z with (a, b, c) equals fixed Z→Y→X with (c, b, a).'};
 var MN={w:'Order: rotate about fixed X, then Y, then Z: R = Rz·Ry·Rx.',l:'Rotation about the moving frame axes: R = Rx·Ry·Rz (like robot joints).'};
 function rot(a,b,c){
   var X=new T.Matrix4().makeRotationX(a*D),Y=new T.Matrix4().makeRotationY(b*D),Z=new T.Matrix4().makeRotationZ(c*D);
@@ -226,8 +234,64 @@ function row(s){
 function grp(t,l,cls,col){return '<fieldset class="'+(cls||'')+'"><legend>'+(col?'<i class="sw" style="background:'+col+'"></i>':'')+t+'</legend>'+l.map(row).join('')+'</fieldset>';}
 function pos(p,t,c,col){return grp(t,[[p+'x','X',-4,4,.1,'','x'],[p+'y','Y',-4,4,.1,'','y'],[p+'z','Z',-4,4,.1,'','z']],c,col);}
 function rt(p,t,c,col){return grp(t,[[p+'rx','X (deg)',-180,180,1,'°','x'],[p+'ry','Y (deg)',-180,180,1,'°','y'],[p+'rz','Z (deg)',-180,180,1,'°','z']],c,col);}
-function build(){
-  var h=pos('A','Frame A position','fa','#0e9aa7')+rt('A','Frame A rotation (degrees)','fa','#0e9aa7')+(tab==='c'?pos('B','Frame B position','fb','#e8890c')+rt('B','Frame B rotation (degrees)','fb','#e8890c'):'')+(tab==='p'?grp('Point q in the frame',[['qx','X',-4,4,.1,'','x'],['qy','Y',-4,4,.1,'','y'],['qz','Z',-4,4,.1,'','z']]):'');
+var FS=['R = I','R = Rx','R = Ry·Rx','R = Rz·Ry·Rx'],FR=['R = I','R = Rz','R = Ry·Rz','R = Rx·Ry·Rz'],ES=['R = I','R = Rx','R = Rx·Ry','R = Rx·Ry·Rz'];
+function eCtl(){
+  var names=['Start','1 · X','2 · Y','3 · Z'],cur=Math.round(ep);
+  return '<div class="seg" id="steps">'+names.map(function(n,i){return '<button data-step="'+i+'" aria-pressed="'+(i===cur&&!anim)+'">'+n+'</button>';}).join('')+'<button id="play">'+(anim?'⏸ Pause':'▶ Play')+'</button></div>'+
+   '<label class="chk"><input type="checkbox" id="rev"'+(erev?' checked':'')+'><span>Apply fixed angles in reverse order (Z, Y, X)</span></label>'+
+   grp('Angles in degrees: a (X), b (Y), c (Z)',[['Ex','X',-180,180,1,'°','x'],['Ey','Y',-180,180,1,'°','y'],['Ez','Z',-180,180,1,'°','z']]);
+}
+/* continuous animation: ep goes 0..3, each whole number is one finished rotation step */
+var ep=3,anim=null;
+var axG=new T.CylinderGeometry(0.05,0.05,9,12);
+var axF=new T.Mesh(axG,new T.MeshBasicMaterial({color:0xe03b3b,transparent:true,opacity:.6}));
+var axE=new T.Mesh(axG,new T.MeshBasicMaterial({color:0xe03b3b,transparent:true,opacity:.6}));
+scene.add(axF,axE);axF.visible=axE.visible=false;
+function setAx(m,o,dir,col){m.position.copy(o);m.quaternion.setFromUnitVectors(new T.Vector3(0,1,0),dir);m.material.color.setHex(col);}
+function sm(u){return u*u*(3-2*u);}
+function rotAx(ax,rad){var m=new T.Matrix4();return ax==='x'?m.makeRotationX(rad):ax==='y'?m.makeRotationY(rad):m.makeRotationZ(rad);}
+function unit(ax){return ax==='x'?new T.Vector3(1,0,0):ax==='y'?new T.Vector3(0,1,0):new T.Vector3(0,0,1);}
+function eMats(p){
+  var k=Math.min(Math.floor(p+1e-9),2),u=p>=3?1:Math.max(0,p-k),us=sm(u);
+  var fo=erev?['z','y','x']:['x','y','z'],fd=erev?[S.Ez,S.Ey,S.Ex]:[S.Ex,S.Ey,S.Ez],eo=['x','y','z'],ed=[S.Ex,S.Ey,S.Ez];
+  var F=new T.Matrix4(),E=new T.Matrix4(),i;
+  for(i=0;i<k;i++){F=rotAx(fo[i],fd[i]*D).multiply(F);E=E.clone().multiply(rotAx(eo[i],ed[i]*D));}
+  var Eaxis=unit(eo[k]).applyMatrix4(E),Faxis=unit(fo[k]);
+  var Fp=rotAx(fo[k],fd[k]*D*us).multiply(F),Ep=E.clone().multiply(rotAx(eo[k],ed[k]*D*us));
+  return{F:Fp,E:Ep,k:k,fa:fo[k],ea:eo[k],fv:Faxis,ev:Eaxis,fdeg:fd[k]*us,edeg:ed[k]*us,ftot:fd[k],etot:ed[k]};
+}
+function dispStep(){return ep<=1e-9?0:Math.min(3,Math.ceil(ep-1e-9));}
+function eUpdate(){
+  var m=eMats(ep),F=m.F,E=m.E,n=dispStep();
+  fF.quaternion.setFromRotationMatrix(F);fE.quaternion.setFromRotationMatrix(E);
+  setAx(axF,fF.position,m.fv,COL[m.fa]);setAx(axE,fE.position,m.ev,COL[m.ea]);
+  var r=F.clone().transpose().multiply(E).elements;
+  var ang=Math.acos(Math.max(-1,Math.min(1,(r[0]+r[5]+r[10]-1)/2)))/D;
+  var fax=erev?['Z','Y','X']:['X','Y','Z'],eax=['X','Y′','Z″'],fs=erev?FR:FS;
+  el('outT').textContent='Fixed angles vs Euler angles';
+  el('out').innerHTML='<div class="kv"><span style="color:#0e9aa7;font-weight:600">F · Fixed angles</span><span>'+fs[n]+'</span></div>'+mat(F,3)+
+    '<div class="kv"><span style="color:#d9820f;font-weight:600">E · Euler angles</span><span>'+ES[n]+'</span></div>'+mat(E,3)+
+    kv('Step '+n+' · Fixed rotates about (world)',n?fax[n-1]:'—')+kv('Step '+n+' · Euler rotates about (moving)',n?eax[n-1]:'—')+
+    kv('Angle turned, Fixed / Euler',n?(Math.round(m.fdeg)+'° / '+Math.round(m.edeg)+'°'):'—')+
+    kv('Orientation difference F vs E',f(ang)+'°')+
+    '<p class="note">'+(n===0?'Both frames start identical.':ang<0.05?'Same orientation at this moment.':'Different orientations: same angles, different order of composition.')+' The colored bar through each frame is the axis it is turning about right now.</p>';
+}
+function syncSteps(){var cur=anim?anim.to:Math.round(ep);el('ctl').querySelectorAll('[data-step]').forEach(function(b){b.setAttribute('aria-pressed',!anim&&+b.dataset.step===cur);});var pl=el('play');if(pl)pl.textContent=anim?'⏸ Pause':'▶ Play';}
+function stopPlay(){anim=null;ep=Math.round(ep);}
+function animateTo(to,from){
+  var fr=from===undefined?ep:from;
+  if(fr===to){anim=null;ep=to;syncSteps();update();return;}
+  ep=fr;anim={from:fr,to:to,t0:performance.now(),dur:Math.abs(to-fr)*1900};syncSteps();update();
+}
+function play(){animateTo(3,0);}
+function tickAnim(){
+  if(!anim)return;
+  var fr=(performance.now()-anim.t0)/anim.dur;
+  if(fr>=1){ep=anim.to;anim=null;syncSteps();}else ep=anim.from+(anim.to-anim.from)*fr;
+  if(tab==='e')eUpdate();
+}
+function build(){stopPlay();
+  var h=tab==='e'?eCtl():pos('A','Frame A position','fa','#0e9aa7')+rt('A','Frame A rotation (degrees)','fa','#0e9aa7')+(tab==='c'?pos('B','Frame B position','fb','#e8890c')+rt('B','Frame B rotation (degrees)','fb','#e8890c'):'')+(tab==='p'?grp('Point q in the frame',[['qx','X',-4,4,.1,'','x'],['qy','Y',-4,4,.1,'','y'],['qz','Z',-4,4,.1,'','z']]):'');
   el('ctl').innerHTML=h;
   el('ctl').querySelectorAll('input[type=range]').forEach(function(i){i.addEventListener('input',function(){
     S[i.dataset.id]=parseFloat(i.value);el('ctl').querySelector('[data-n="'+i.dataset.id+'"]').value=i.value;update();});});
@@ -238,6 +302,10 @@ function build(){
       if(n.dataset.ang==='1'){v=((v+180)%360+360)%360-180;}
       S[n.dataset.n]=v;n.value=v;el('ctl').querySelector('[data-id="'+n.dataset.n+'"]').value=v;update();});});
   el('tabNote').textContent=NOTE[tab];
+  el('modeBox').style.display=tab==='e'?'none':'';
+  el('ctl').querySelectorAll('[data-step]').forEach(function(b){b.onclick=function(){animateTo(+b.dataset.step);};});
+  var rv=el('rev');if(rv)rv.onchange=function(){erev=rv.checked;update();};
+  var pl=el('play');if(pl)pl.onclick=function(){if(anim){anim=null;syncSteps();update();}else play();};
   el('tabs').querySelectorAll('button').forEach(function(b){b.setAttribute('aria-pressed',b.dataset.t===tab);});
   update();
 }
@@ -246,11 +314,13 @@ function update(){
   var MA=M(),MB=M('B'),oA=new T.Vector3().setFromMatrixPosition(MA),oB=new T.Vector3().setFromMatrixPosition(MB),o='';
   MA.decompose(fA.position,fA.quaternion,sc);MB.decompose(fB.position,fB.quaternion,sc);
   fB.visible=tab==='c';fA.userData.badge.visible=tab!=='f';
+  var isE=tab==='e';fA.visible=!isE;fF.visible=fE.visible=gF.visible=gE.visible=isE;axF.visible=axE.visible=isE;
   P.visible=lnA.visible=tab==='p';lnO.visible=tab==='p'||tab==='c';
   infoB.sp.visible=tab==='c';infoP.sp.visible=tab==='p';
-  updInfo(infoA,'A',oA,'#0e9aa7');updStair(stA,S.Ax,S.Ay,S.Az,true);
+  updInfo(infoA,'A',oA,'#0e9aa7');infoA.sp.visible=!isE;updStair(stA,S.Ax,S.Ay,S.Az,!isE);
   if(tab==='c'){updInfo(infoB,'B',oB,'#e8890c');}
   updStair(stB,S.Bx,S.By,S.Bz,tab==='c');
+  if(isE){eUpdate();return;}
   if(tab==='f'){
     el('outT').textContent='Rotation matrix R';
     o=mat(MA,3)+kv('Position p',vec(oA))+'<p class="note">Each column is the direction of one frame axis in world coordinates.</p>';
@@ -275,10 +345,12 @@ TABS.forEach(function(t){var b=document.createElement('button');b.textContent=t[
   b.onclick=function(){tab=t[0];build();};el('tabs').appendChild(b);});
 function setMode(w){world=w;el('mWorld').setAttribute('aria-pressed',w);el('mLocal').setAttribute('aria-pressed',!w);update();}
 el('mWorld').onclick=function(){setMode(true);};el('mLocal').onclick=function(){setMode(false);};
-el('reset').onclick=function(){S=Object.assign({},DEF);world=true;setMode(true);build();};
+el('reset').onclick=function(){S=Object.assign({},DEF);ep=3;anim=null;erev=false;world=true;setMode(true);build();};
 resize();place();build();setMode(true);
-(function loop(){renderer.render(scene,cam);requestAnimationFrame(loop);})();
+(function loop(){tickAnim();renderer.render(scene,cam);requestAnimationFrame(loop);})();
 })();
 </script>
 </body>
 </html>
+
+</body></html>
