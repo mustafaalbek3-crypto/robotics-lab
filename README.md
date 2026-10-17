@@ -1,5 +1,4 @@
 [3D Spatial Frames Lab.html](https://github.com/user-attachments/files/33593132/3D.Spatial.Frames.Lab.html)
-<!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
 <meta charset="utf-8">
